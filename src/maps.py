@@ -20,3 +20,5 @@ for step in directions_result[0]["legs"]:
 for step in directions_result[0]["legs"]:
     for s in (step['steps']):
         print(s["html_instructions"])
+
+
