@@ -91,3 +91,11 @@ body {
   cursor: pointer;
   border-radius: 50%;
 }
+
+
+
+
+#map {
+  height: 100%;
+}
+
