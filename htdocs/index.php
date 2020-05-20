@@ -37,8 +37,9 @@
                         <div class="container slider-container">
                             <input type="range" id="route_speed" name="route_speed" min="0" max="2" value="1" required>
                         </div>
-                        <div name="speedcomment">
-
+                        <div id="speedcomment" name="speedcomment" class="container-fluid">
+                            <h4> Normal speed </h4> <br>
+                            <h5> You are expected to run at 10 m/s </h5>
                         </div>
 
                         <h3> Where are you going to start from? </h3>
@@ -70,6 +71,7 @@
         <!-- Script per fer la ruta -->
 
         <!-- Script per a la pagina -->
+        <script type="text/javascript" src="./scripts/modifiers.js"></script>
 
     </body>
 </html>
