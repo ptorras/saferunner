@@ -27,31 +27,34 @@
                     <p> Configure your start point, your pace and your time of departure. We'll handle the rest </p>
                 </div>
 
-                <div class="container-fluid transp-back rounded text-center">
+                <div class="container-fluid text-center">
                     <form action="" method="post">
-                        <h3> How long will you be running? </h3>
-                        From    <input type="time" id="route_time_begin" name="route_time_begin" required>
-                        to      <input type="time" id="route_time_end"   name="route_time_end" required>
-                        <br>
+                        <div class="rounded transp-back">
+                            <h3> How long will you be running? </h3>
+                            From    <input type="time" id="route_time_begin" name="route_time_begin" required>
+                            to      <input type="time" id="route_time_end"   name="route_time_end" required>
+                        </div>
 
-                        <h3> What's your running speed? </h3>
-                        <div class="container slider-container">
-                            <input type="range" id="route_speed" name="route_speed" min="0" max="2" value="1" required>
+                        <div class="rounded transp-back">
+                            <h3> What's your running speed? </h3>
+                            <div class="container slider-container">
+                                <input type="range" id="route_speed" name="route_speed" min="0" max="2" value="1" required>
+                            </div>
+                            <div id="speedcomment" name="speedcomment" class="container-fluid">
+                                <h4> Normal speed </h4> <br>
+                                <h5> You are expected to run at 9 km/h </h5>
+                            </div>
                         </div>
-                        <div id="speedcomment" name="speedcomment" class="container-fluid">
-                            <h4> Normal speed </h4> <br>
-                            <h5> You are expected to run at 9 km/h </h5>
+                        <div class="rounded transp-back">
+                            <h3> Where are you going to start from? </h3>
+                            <div id="map" class="container-fluid"></div>
                         </div>
-                        <br>
-                        <h3> Where are you going to start from? </h3>
-                            <div id="map"></div>
-                        <br>
                     </form>
                 </div>
             </div>
 
         </div>
-        <footer class="footer">
+        <footer class="footer fixed-bottom footer-custom">
             <div class="container">
                 <div>
                     ©2020 SafeRunner Project. Background image by <a href="https://commons.wikimedia.org/wiki/File:Fisher_Run_Road_2.JPG" title="via Wikimedia Commons">Jakec</a> / <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA</a>
@@ -74,16 +77,13 @@
 
         <!-- Scripts per a la pagina -->
         <script type="text/javascript" src="./scripts/modifiers.js"></script>
-
-        <script type="text/javascript" src="./scripts/map.js"> </script>
+        <script type="text/javascript" src="./scripts/map.js"></script>
 
         <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=
-                <?php
+            src="https://maps.googleapis.com/maps/api/js?key=<?php
                     require_once(__DIR__.'/secret/key.php');
                     echo $key;
-                ?>
-            &callback=initMap"> </script>
+                ?>&callback=initMap"> </script>
 
     </body>
 </html>
