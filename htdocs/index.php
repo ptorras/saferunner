@@ -83,7 +83,7 @@
             src="https://maps.googleapis.com/maps/api/js?key=<?php
                     require_once(__DIR__.'/secret/key.php');
                     echo $key;
-                ?>&callback=initMap"> </script>
+                ?>&callback=beginMap"> </script>
 
     </body>
 </html>

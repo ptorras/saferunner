@@ -1,37 +1,20 @@
 var map;
 
-function getLocation() {
+function beginMap() {
     if (navigator.geolocation)
     {
-        var location;
         console.log("Location");
         navigator.geolocation.getCurrentPosition(function(pos){
-            console.log("Got the Location");
-            location = {
-                lat: pos.coords.latitude,
-                lat: pos.coords.longitude
-            }
+            console.log(pos.coords.latitude);
+            console.log(pos.coords.longitude);
+            initMap(pos.coords.latitude, pos.coords.longitude);
         });
-        return location;
     }
-    else
-    {
-        return 0;
-    }
-
 }
 
-function initMap() {
-    var myLatLng = {lat:41.55, long:2.225};
-    var loc = getLocation();
-
-    if (loc != 0)
-    {
-        myLatLng = loc;
-    }
-
+function initMap(latitud, longitud) {
     map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat:Number(latitud), lng:Number(longitud)},
         zoom: 15,
-        center: myLatLng
     });
 }
