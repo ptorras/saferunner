@@ -1,0 +1,93 @@
+body {
+	padding-top: 80px;
+}
+
+.navbar-custom {
+  background-color: #b82727;
+	font: "Arial Black";
+	text-transform: uppercase;
+	font-style: italic;
+}
+
+.navbar-custom img:hover {
+	filter: invert(1);
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color: rgba(255,255,255,.8);
+}
+
+.navbar-custom .navbar-nav .nav-link {
+    color: rgba(255,255,255,.5);
+}
+
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #ffffff;
+}
+
+.runner-logo {
+	height: 80px;
+}
+
+.parallax {
+  background-image: url("./img/bg.jpg");
+
+  height: 1080px;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.transp-back {  
+  background-color: rgba(255, 255, 255,.6);
+}
+
+.pagebody {
+  padding-top: 50px;
+}
+
+.slider-container {
+  width: 50%;
+  display: flex;
+}
+
+.slider-container input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+
+  width: 100%;
+  background: #e07272;
+  outline-color: #ffffff;
+  opacity: .8;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  height: 15px;
+  border-radius: 5px;
+}
+
+.slider-container input[type=range]:hover {
+  opacity: 1;
+}
+
+.slider-container input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #b82727;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.slider-container input[type=range]::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #b82727;
+  cursor: pointer;
+  border-radius: 50%;
+}
