@@ -1,3 +1,4 @@
+// Funcio de startup de la API de google maps
 function beginMap() {
     if (navigator.geolocation)
     {
@@ -24,11 +25,13 @@ function initMap(latitud, longitud) {
         content: "Your Position"
     });
 
+    // Modificar el formulari amb el mapa
     $("#route_in_lat").val(latitud);
     $("#route_in_lng").val(longitud);
 
     posMark.open(map);
 
+    // En cas de clicks modificar el formulari i la senyal
     map.addListener('click', function(mapsMouseEvent) {
         posMark.close();
 
