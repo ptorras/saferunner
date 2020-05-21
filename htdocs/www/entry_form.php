@@ -9,7 +9,7 @@
     <link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
                             integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
                             crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./www/css/style.css">
     <title>SafeRunner</title>
     </head>
     <body>
@@ -17,7 +17,7 @@
         	<nav class="navbar navbar-expand-sm navbar-custom fixed-top">
                 <div class="container-fluid">
                     <div class = "navbar-header">
-                        <a class="navbar-brand" href="./"> <img src="./images/saferunner.png" class = "img-fluid runner-logo"> </a>
+                        <a class="navbar-brand" href="./"> <img src="./www/images/saferunner.png" class = "img-fluid runner-logo"> </a>
                     </div>
                 </div>
         	</nav>
@@ -84,14 +84,14 @@
         <!-- Scripts per fer la ruta -->
 
         <!-- Scripts per a la pagina -->
-        <script type="text/javascript" src="./js/modifiers.js"></script>
-        <script type="text/javascript" src="./js/map.js"></script>
+        <script async defer type="text/javascript" src="./www/js/modifiers.js"></script>
+        <script async defer type="text/javascript" src="./www/js/map.js"></script>
 
         <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=<?php
                     require_once(__DIR__.'/secret/key.php');
                     echo $key;
-                ?>&callback=beginMap"> </script>
+                ?>&callback=initMap"> </script>
 
     </body>
 </html>
