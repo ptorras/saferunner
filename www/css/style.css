@@ -36,7 +36,7 @@ body {
 }
 
 .parallax {
-  background-image: url("./img/bg.jpg");
+  background-image: url("../img/bg.jpg");
 
   height: 100%;
 

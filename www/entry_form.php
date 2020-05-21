@@ -9,7 +9,7 @@
     <link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
                             integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
                             crossorigin="anonymous">
-    <link rel="stylesheet" href="./customstuff.css">
+    <link rel="stylesheet" href="./css/style.css">
     <title>SafeRunner</title>
     </head>
     <body>
@@ -17,7 +17,7 @@
         	<nav class="navbar navbar-expand-sm navbar-custom fixed-top">
                 <div class="container-fluid">
                     <div class = "navbar-header">
-                        <a class="navbar-brand" href="./"> <img src="./img/saferunner.png" class = "img-fluid runner-logo"> </a>
+                        <a class="navbar-brand" href="./"> <img src="./images/saferunner.png" class = "img-fluid runner-logo"> </a>
                     </div>
                 </div>
         	</nav>
@@ -43,7 +43,7 @@
                             </div>
                             <div id="speedcomment" name="speedcomment" class="container-fluid">
                                 <h4> Normal speed </h4> <br>
-                                <h5> You are expected to run at 9 km/h </h5>
+                                <h5> You are expected to run at 10 km/h </h5>
                             </div>
                         </div>
                         <div class="rounded transp-back">
@@ -84,8 +84,8 @@
         <!-- Scripts per fer la ruta -->
 
         <!-- Scripts per a la pagina -->
-        <script type="text/javascript" src="./scripts/modifiers.js"></script>
-        <script type="text/javascript" src="./scripts/map.js"></script>
+        <script type="text/javascript" src="./js/modifiers.js"></script>
+        <script type="text/javascript" src="./js/map.js"></script>
 
         <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=<?php
