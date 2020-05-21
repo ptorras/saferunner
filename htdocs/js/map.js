@@ -1,20 +1,18 @@
-console.log("Its loaded");
 // Funcio de startup de la API de google maps
-function initMap() {
-    console.log("enabled map");
+function beginMap() {
     if (navigator.geolocation)
     {
         navigator.geolocation.getCurrentPosition(function(pos){
-            beginMap(pos.coords.latitude, pos.coords.longitude);
+            initMap(pos.coords.latitude, pos.coords.longitude);
         });
     }
     else
     {
-        beginMap(-25.363, 131.044);
+        initMap(-25.363, 131.044);
     }
 }
 
-function beginMap(latitud, longitud) {
+function initMap(latitud, longitud) {
     // El mapa en si
     var map = new google.maps.Map(document.getElementById('map'), {
         center: {lat:Number(latitud), lng:Number(longitud)},
