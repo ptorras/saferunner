@@ -47,3 +47,21 @@ function beginMap(latitud, longitud) {
         $("#route_in_lng").val(mapsMouseEvent.latLng.lng);
     });
 }
+
+function startScript(){
+    console.log("Starting python script");
+    $.ajax({
+        url: "src/maps.py",
+        type: "POST",
+        timeout: 60000,
+        async: true,
+        data: {"url": dominio, "tema": tematica},
+        success: function (response) {
+            console.log("OK");
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
+          }
+    });
+}
