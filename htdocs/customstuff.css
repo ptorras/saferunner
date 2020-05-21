@@ -101,8 +101,22 @@ body {
   border-radius: 50%;
 }
 
+input[type=number], input[type=time], input[type=date] {
+  text-align: center;
+  border-radius: 5px;
+  border:none;
+}
+
+.submit-it {
+  font: impact;
+  border-radius: 5px;
+  background-color: #b82727;
+  color: #ffffff;
+  height: 100%;
+  border:none;
+}
+
 #map {
   width: 95%;
   height: 70vh;
 }
-

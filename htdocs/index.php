@@ -21,7 +21,7 @@
                     </div>
                 </div>
         	</nav>
-            <div class = "container-fluid pagebody" id = "full_container">
+            <div class="container-fluid pagebody" id = "full_container">
                 <div class="jumbotron text-center transp-back">
                     <h1> Set your route </h1>
                     <p> Configure your start point, your pace and your time of departure. We'll handle the rest </p>
@@ -33,6 +33,7 @@
                             <h3> How long will you be running? </h3>
                             From    <input type="time" id="route_time_begin" name="route_time_begin" required>
                             to      <input type="time" id="route_time_end"   name="route_time_end" required>
+                            of day  <input type="date" id="route_time_date"  name="route_time_date" required>
                         </div>
 
                         <div class="rounded transp-back">
@@ -47,7 +48,14 @@
                         </div>
                         <div class="rounded transp-back">
                             <h3> Where are you going to start from? </h3>
+                            Click on the map to get your initial position.
                             <div id="map" class="container-fluid"></div>
+                            <h5> Your coordinates are: </h5>
+                            Latitude  <input type="number" id="route_in_lat" name="route_lat" readonly>
+                            Longitude <input type="number" id="route_in_lng" name="route_lng" readonly>
+                        </div>
+                        <div class="rounded transp-back">
+                            <input class="submit-it" type="submit" value="Make a route">
                         </div>
                     </form>
                 </div>
