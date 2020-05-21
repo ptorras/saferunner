@@ -4,7 +4,10 @@ from datetime import datetime
 from ipywidgets.embed import embed_minimal_html
 import json
 from secret import key
+import cgi
 
+form = cgi.FieldStorage()
+print('form')
 
 gmap = googlemaps.Client(key=key)
 gmaps.configure(api_key=key)
