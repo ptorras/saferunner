@@ -50,18 +50,14 @@ function beginMap(latitud, longitud) {
 
 function startScript(){
     console.log("Starting python script");
+
     $.ajax({
         url: "src/maps.py",
         type: "POST",
-        timeout: 60000,
-        async: true,
-        data: {"url": dominio, "tema": tematica},
-        success: function (response) {
-            console.log("OK");
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert(xhr.status);
-            alert(thrownError);
-          }
+        data: $("form[id='route_form']").serialize(),
+        success: function(response){
+            output = response;
+            //alert(output);
+        }
     });
 }
