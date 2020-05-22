@@ -22,3 +22,6 @@ handlers:
   script: auto
 - url: /(.\.css)$
   script: auto
+
+env_variables:
+  MAPS_API_KEY: "KEY"
