@@ -9,7 +9,7 @@
     <link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
                             integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
                             crossorigin="anonymous">
-    <link rel="stylesheet" href="./www/css/style.css">
+    <link rel="stylesheet" href="www/css/style.css">
     <title>SafeRunner</title>
     </head>
     <body>
@@ -84,13 +84,12 @@
         <!-- Scripts per fer la ruta -->
 
         <!-- Scripts per a la pagina -->
-        <script async defer type="text/javascript" src="./www/js/modifiers.js"></script>
-        <script async defer type="text/javascript" src="./www/js/map.js"></script>
+        <script async defer type="text/javascript" src="www/js/modifiers.js"></script>
+        <script async defer type="text/javascript" src="www/js/map.js"></script>
 
         <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=<?php
-                    require_once(__DIR__.'/secret/key.php');
-                    echo $key;
+                echo $MAPS_API_KEY;
                 ?>&callback=initMap"> </script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </body>

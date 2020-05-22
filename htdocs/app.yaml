@@ -1,8 +1,24 @@
-# Use the PHP 7.3 runtime (BETA) by replacing "php72" below with "php73"
 runtime: php72
+handlers:
 
-# Defaults to "serve index.php" and "serve public/index.php". Can be used to
-# serve a custom PHP front controller (e.g. "serve backend/index.php") or to
-# run a long-running PHP script as a worker process (e.g. "php worker.php").
-#
-entrypoint: serve htdocs/index.php
+- url: /(.+\.(gif|png|jpg|svg|webp|jpeg|js|php|css))$
+  static_files: \1
+  upload: .+\.(gif|png|jpg|svg|webp|jpeg|js|php|css)$
+
+- url: /www/css
+  static_dir: css
+
+- url: /www/js
+  static_dir: js
+- url: /www/images
+  static_dir: images
+- url: /src
+  static_dir: src
+- url: /
+  script: auto
+- url: /(.\.php)$
+  script: auto
+- url: /(.\.js)$
+  script: auto
+- url: /(.\.css)$
+  script: auto

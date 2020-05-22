@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.'/www/secret/key.php';
 // Entry point per a que l'App engine detecti els path
 switch (@parse_url($_SERVER['REQUEST_URI'])['path']) {
     case '/':
