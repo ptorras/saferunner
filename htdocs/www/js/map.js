@@ -1,5 +1,6 @@
 console.log("Its loaded");
 // Funcio de startup de la API de google maps
+
 function initMap() {
     console.log("enabled map");
     if (navigator.geolocation)
@@ -48,16 +49,19 @@ function beginMap(latitud, longitud) {
     });
 }
 
-function startScript(){
-    console.log("Starting python script");
-
-    $.ajax({
-        url: "src/maps.py",
-        type: "POST",
-        data: $("form[id='route_form']").serialize(),
-        success: function(response){
-            output = response;
-            //alert(output);
-        }
+$(document).ready(function() {
+    $("#submitbutton").on("click", function() {
+        $("#full_container").hide(500, function() {
+            $("#output_container").hide(0);
+            var $map_container = $("<div>", {"class": "rounded transp-back"});
+            $map_container.append($("#map"));
+            $("#output_container").append($map_container);
+            $("#full_container").remove();
+            $("#output_container").show(500, function() {
+                $("html, body").animate({scrollTop: $(document).height()}, 1000, "swing", function() {
+                    
+                });
+            });
+        });
     });
-}
+});

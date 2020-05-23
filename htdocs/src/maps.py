@@ -7,7 +7,7 @@ from secret import key
 import cgi
 
 form = cgi.FieldStorage()
-print(form)
+print('form')
 
 gmap = googlemaps.Client(key=key)
 gmaps.configure(api_key=key)
@@ -47,11 +47,6 @@ for n, point in enumerate(path_coords):
 
 
 # TODO: add db entry
-
-# TEST
-
-with open("test.txt", 'w') as file:
-    file.write(str(path_coords))
 
 
 """

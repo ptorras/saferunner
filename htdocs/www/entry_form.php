@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="container-fluid text-center">
-                    <form id="route_form"> <!-- method="post"> -->
+                    <form method="post">
                         <div class="rounded transp-back">
                             <h3> How long will you be running? </h3>
                             From    <input type="time" id="route_time_begin" name="route_time_begin" required>
@@ -55,12 +55,12 @@
                             Longitude <input type="number" id="route_in_lng" name="route_lng" readonly>
                         </div>
                         <div class="rounded transp-back">
-                            <input class="submit-it" type="button" value="Make a route" onclick="startScript()">
+                            <input class="submit-it" type="button" value="Make a route" id="submitbutton">
                         </div>
                     </form>
                 </div>
             </div>
-
+            <div class="container-fluid pagebody" id = "output_container"></div>
         </div>
         <footer class="footer fixed-bottom footer-custom">
             <div class="container">
