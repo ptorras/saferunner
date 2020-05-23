@@ -1,0 +1,9 @@
+service: python
+runtime: python37
+api_version: 1
+
+libraries:
+- name: googlemaps
+  version: "latest"
+- name: gmaps
+  version: "latest"
