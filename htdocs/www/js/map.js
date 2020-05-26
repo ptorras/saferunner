@@ -47,21 +47,59 @@ function beginMap(latitud, longitud) {
         $("#route_in_lat").val(mapsMouseEvent.latLng.lat);
         $("#route_in_lng").val(mapsMouseEvent.latLng.lng);
     });
-}
 
-$(document).ready(function() {
     $("#submitbutton").on("click", function() {
         $("#full_container").hide(500, function() {
             $("#output_container").hide(0);
             var $map_container = $("<div>", {"class": "rounded transp-back"});
+            // Afegir titol i altres histories per indicar la ruta
             $map_container.append($("#map"));
             $("#output_container").append($map_container);
             $("#full_container").remove();
+
+            $.post("https://us-central1-safe-runner.cloudfunctions.net/function-2",
+                {}, function(data, status)
+                {
+                    console.log("Gotten data");
+                    console.log(data);
+
+                    data = data.replace(/'/g, '"');
+                    var coords = JSON.parse(data);
+
+                    // var tot_lng = 0.0;
+                    // var tot_lat = 0.0;
+
+                    // for (var x = 0; x < data.length; x++)
+                    // {
+                    //     console.log(typeof(data[x].lng));
+                    //     tot_lng += data[x].lng;
+                    //     tot_lat += data[x].lat;
+                    // }
+
+                    // console.log(tot_lng);
+                    // console.log(tot_lat);
+                    // tot_lng /= data.length > 0.0? data.length: 1.0;
+                    // tot_lat /= data.length > 0.0? data.length: 1.0;
+
+                    // const center = new google.maps.LatLng(tot_lat, tot_lng);
+                    // map.panTo(center);
+
+                    var test_line = new google.maps.Polyline({
+                        path: coords,
+                        geodesic: false,
+                        strokeColor: '#f542e3',
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2
+                    });
+
+                    test_line.setMap(map);
+                });
+
             $("#output_container").show(500, function() {
-                $("html, body").animate({scrollTop: $(document).height()}, 1000, "swing", function() {
+                $("html, body").animate({scrollTop: 0}, 1000, "swing", function() {
                     
                 });
             });
         });
     });
-});
+}

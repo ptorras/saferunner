@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="container-fluid text-center">
-                    <form method="post">
+                    <form method="post" name="entry_form" id="entry_form">
                         <div class="rounded transp-back">
                             <h3> How long will you be running? </h3>
                             From    <input type="time" id="route_time_begin" name="route_time_begin" required>
