@@ -1,8 +1,0 @@
-dispatch:
-  # web front
-  - url: "*/*"
-    service: default
-
-  # python back
-  - url: "*/run/*"
-    service: python

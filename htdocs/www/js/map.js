@@ -55,10 +55,19 @@ function beginMap(latitud, longitud) {
             // Afegir titol i altres histories per indicar la ruta
             $map_container.append($("#map"));
             $("#output_container").append($map_container);
+
+            // Convertir el formulari a JSON i enviar-ho al cloud
+            var formdata = $("#entry_form").serializeArray();
+            var json_opt = {};
+            for (var elm = 0; elm < formdata.length; elm++)
+            {
+                json_opt[formdata[elm].name] = formdata[elm].value;
+            }
+
             $("#full_container").remove();
 
             $.post("https://us-central1-safe-runner.cloudfunctions.net/function-2",
-                {}, function(data, status)
+                json_opt, function(data, status)
                 {
                     console.log("Gotten data");
                     console.log(data);
