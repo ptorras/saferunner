@@ -8,6 +8,8 @@ import cgi
 import math
 import random
 
+
+
 form = cgi.FieldStorage()
 
 R = 6373.0  # Earth radius
@@ -75,7 +77,7 @@ while len(possible_waypoints) < 3:
     pass
 
 for point in possible_waypoints:
-    print(point['name'])
+    print(point['id'], type(point['id']))
 
 # TODO: Sort points by coincidences at same time
 sorted_waypoints = possible_waypoints
@@ -118,16 +120,15 @@ print("Number of legs {}".format(len(directions_result)))
 
 # Data structure to save path points coords
 path_coords = []
+path_coords.append(directions_result['legs'][0]['start_location'].copy())
 for step in directions_result['legs']:
-    path_coords.append([step['start_location']['lat'], step['start_location']['lng'], step['distance']])
-    path_coords.append([step['end_location']['lat'], step['end_location']['lng'], step['distance']])
+    path_coords.append(step['end_location'].copy())
 
 # Visual check
 for n, point in enumerate(path_coords):
     print("Step {}".format(n))
-    print("Latitude: {} \t Longitude: {}".format(point[0], point[1]))
-    print(point[2])
+    print("Latitude: {} \t Longitude: {}".format(point['lat'], point['lng']))
 
-
+print(json.dumps(path_coords))
 # TODO: add db entry
 

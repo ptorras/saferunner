@@ -22,11 +22,12 @@ city = ""
 #waypoints=list()
 waypoints=[]
 
-places_result  = gmaps.places_nearby(origin, distance , open_now =False , type = 'park')
+places_result= gmaps.places_nearby(origin, distance, type='park')
+
+print(places_result['results'])
 
 #types URL=   developers.google.com/places/web-service/supported_types
 
-time.sleep(3)
 
 #get the next 20 results
 #place_result  = gmaps.places_nearby(page_token = places_result['next_page_token'])

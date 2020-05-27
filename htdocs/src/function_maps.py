@@ -4,10 +4,25 @@ import json
 import os
 import math
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
+import sqlalchemy
 
 
 def get_route(request):
+
+    data = request.get_json()
+
+    db = sqlalchemy.create_engine(
+        sqlalchemy.engine.url.URL(
+            drivername="mysql+pymysql",
+            username="root",
+            password=os.environ.get('SQL_PASSWORD'),
+            database="saferunnerDB",
+            query={"unix_socket": "/cloudsql/{}".format("balmy-virtue-277911:europe-west3:saferunner-sql")},
+        ),
+        pool_recycle=1800,  # 30 minutes
+    )
+
     key=os.environ.get('KEY')
 
     R = 6373.0  # Earth radius
@@ -22,8 +37,10 @@ def get_route(request):
 
     distance = 5000
     places_radius = distance/(math.pi)
-    date = ""
-    time = ""
+    date = datetime.now().strftime("%Y-%m-%d")
+    hour1 = datetime.now().strftime("%H:%M:%S")
+    # TODO improvement: calcular el temps a partir del pace
+    hour2 = (datetime.now() + timedelta(hours=1)).strftime("%H:%M:%S")
     pace = ""
     city = ""
 
@@ -69,7 +86,7 @@ def get_route(request):
         x = x / math.cos(origin[1])
         lat = x + origin[0]  # TODO
         lng = y + origin[1]
-        info = {'lat': lat, 'lng': lng, 'id': 'RAND', 'name': 'RAND_POINT'}
+        info = {'lat': lat, 'lng': lng, 'id': 'RAND', 'name': 'RAND_POINT', 'count': 0}
         possible_waypoints.append(info)
         print((lat, lng))
         pass
@@ -78,7 +95,21 @@ def get_route(request):
         print(point['name'])
 
     # TODO: Sort points by coincidences at same time
-    sorted_waypoints = possible_waypoints
+
+    with db.connect() as conn:
+        for wp in possible_waypoints:
+            stmt = sqlalchemy.text(
+                "SELECT COUNT(*) FROM punt WHERE id_waypoint = :id "
+                "AND datediff(data, :data) = 0 "
+                "AND CAST(data as time) between :h1 and :h2"
+            )
+
+            punts = conn.execute(stmt, id=wp['id'], data=date, h1=hour1, h2=hour2).fetchall()
+            wp['count'] = punts[0][0]
+        conn.close()
+
+    sorted_waypoints = sorted(possible_waypoints, key=lambda d: d['count'])
+    return str(sorted_waypoints)
 
     # Select waypoints for the route
     waypoints = []
@@ -126,8 +157,5 @@ def get_route(request):
         print("Step {}".format(n))
         print("Latitude: {} \t Longitude: {}".format(point['lat'], point['lng']))
 
+
     return json.dumps(path_coords)
-
-
-
-
