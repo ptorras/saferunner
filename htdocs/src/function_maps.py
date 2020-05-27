@@ -10,7 +10,7 @@ import sqlalchemy
 
 def get_route(request):
 
-    data = request.get_json()
+    coords = request.get_json()
 
     db = sqlalchemy.create_engine(
         sqlalchemy.engine.url.URL(
@@ -32,8 +32,8 @@ def get_route(request):
 
     # TODO: get this from client
     now = datetime.now()
-    origin = (41.620748, 2.295780)
-    origin = (41.564166, 1.999159)
+    # origin = (41.564166, 1.999159)
+    origin = (coords['lat'], coords['lng'])
 
     distance = 5000
     places_radius = distance/(math.pi)
@@ -41,6 +41,7 @@ def get_route(request):
     hour1 = datetime.now().strftime("%H:%M:%S")
     # TODO improvement: calcular el temps a partir del pace
     hour2 = (datetime.now() + timedelta(hours=1)).strftime("%H:%M:%S")
+    
     pace = ""
     city = ""
 
@@ -99,9 +100,9 @@ def get_route(request):
     with db.connect() as conn:
         for wp in possible_waypoints:
             stmt = sqlalchemy.text(
-                "SELECT COUNT(*) FROM punt WHERE id_waypoint = :id "
-                "AND datediff(data, :data) = 0 "
-                "AND CAST(data as time) between :h1 and :h2"
+                "SELECT COUNT(*) FROM punt WHERE id_waypoint = :id "           #"AND DATEDIFF(day, data, :data) = 0 "
+                "AND CAST(data AS DATE) = CAST(:data AS DATE)"
+                "AND CAST(data AS TIME) between :h1 and :h2"
             )
 
             punts = conn.execute(stmt, id=wp['id'], data=date, h1=hour1, h2=hour2).fetchall()
