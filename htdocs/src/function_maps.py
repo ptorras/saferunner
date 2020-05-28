@@ -10,6 +10,18 @@ import sqlalchemy
 
 def get_route(request):
 
+    if request.method == 'OPTIONS':
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '3600'
+        }
+        return ('', 204, headers)
+    headers = {
+        'Access-Control-Allow-Origin': '*'
+    }
+
     coords = request.get_json()
 
     db = sqlalchemy.create_engine(
@@ -109,7 +121,7 @@ def get_route(request):
         conn.close()
 
     sorted_waypoints = sorted(possible_waypoints, key=lambda d: d['count'])
-    return str(sorted_waypoints)
+    # return (str(sorted_waypoints), 200, headers)
 
     # Select waypoints for the route
     waypoints = []
@@ -157,5 +169,4 @@ def get_route(request):
         print("Step {}".format(n))
         print("Latitude: {} \t Longitude: {}".format(point['lat'], point['lng']))
 
-
-    return json.dumps(path_coords)
+    return (json.dumps(path_coords), 200, headers)
