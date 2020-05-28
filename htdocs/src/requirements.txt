@@ -1,0 +1,4 @@
+googlemaps
+gmaps
+SQLAlchemy==1.3.17
+PyMySQL==0.9.3
