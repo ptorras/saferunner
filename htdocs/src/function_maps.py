@@ -9,20 +9,27 @@ import sqlalchemy
 
 
 def get_route(request):
-
     if request.method == 'OPTIONS':
         headers = {
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Methods': 'GET, POST',
             'Access-Control-Allow-Headers': 'Content-Type',
             'Access-Control-Max-Age': '3600'
         }
         return ('', 204, headers)
     headers = {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': '*'
     }
 
-    coords = request.get_json()
+    lat = request.form.getlist('route_lat')[0]
+    lng = request.form.getlist('route_lng')[0]
+    time_begin = request.form.getlist('route_time_begin')[0] + ":00"
+    time_end = request.form.getlist('route_time_end')[0] + ":00"
+    date = request.form.getlist('route_time_date')[0]
+
+    # return (str(lat) + str(lng) + str(time_begin) + str(time_end) + str(date)), 200, headers
+
 
     db = sqlalchemy.create_engine(
         sqlalchemy.engine.url.URL(
@@ -35,7 +42,7 @@ def get_route(request):
         pool_recycle=1800,  # 30 minutes
     )
 
-    key=os.environ.get('KEY')
+    key = os.environ.get('KEY')
 
     R = 6373.0  # Earth radius
 
@@ -44,15 +51,15 @@ def get_route(request):
 
     # TODO: get this from client
     now = datetime.now()
-    origin = (coords['lat'], coords['lng'])
+    origin = (lat, lng)
 
     distance = 5000
-    places_radius = distance/(math.pi)
-    date = datetime.now().strftime("%Y-%m-%d")
-    hour1 = datetime.now().strftime("%H:%M:%S")
-    # TODO improvement: calcular el temps a partir del pace
-    hour2 = (datetime.now() + timedelta(hours=1)).strftime("%H:%M:%S")
-
+    places_radius = distance / (math.pi)
+    # date = datetime.now().strftime("%Y-%m-%d")
+    # hour1 = datetime.now().strftime("%H:%M:%S")
+    # hour2 = (datetime.now() + timedelta(hours=1)).strftime("%H:%M:%S")
+    hour1 = time_begin
+    hour2 = time_end
     pace = ""
     city = ""
 
@@ -84,11 +91,10 @@ def get_route(request):
                 'id': nat['id'], 'name': nat['name']}
         possible_waypoints.append(info)
 
-
     # If not enough places, generate random points
     while len(possible_waypoints) < 3:
         # create random points
-        r = places_radius/(4*111300)        # radius conversion to degrees (also by 4 to reduce random area)
+        r = places_radius / (4 * 111300)  # radius conversion to degrees (also by 4 to reduce random area)
         u = random.random()
         v = random.random()
         w = r * math.sqrt(u)
@@ -127,7 +133,7 @@ def get_route(request):
     waypoints = []
     total_distance = 0
     i = 0
-    while (len(waypoints) < 3 or total_distance >= distance*1.3) and i < len(sorted_waypoints):
+    while (len(waypoints) < 3 or total_distance >= distance * 1.3) and i < len(sorted_waypoints):
         point = sorted_waypoints[i]
         if i == 0:
             total_distance += gmap.distance_matrix(origin, (point['lat'], point['lng']),
@@ -142,13 +148,13 @@ def get_route(request):
                 dest = (point['lat'], point['lng'])
 
             dist = gmap.distance_matrix(org, dest, mode='walking')['rows'][0]['elements'][0]['distance']['value']
-            if total_distance + dist <= total_distance*1.3:    # variation possibility
+            if total_distance + dist <= total_distance * 1.3:  # variation possibility
                 total_distance += dist
                 waypoints.append((point['lat'], point['lng']))
         i += 1
 
     # Fill with random if not full and distance not covered
-    while len(waypoints) < 3 and distance*0.7 >= total_distance >= distance*1.3:
+    while len(waypoints) < 3 and distance * 0.7 >= total_distance >= distance * 1.3:
         rand_choice = random.randint(0, len(sorted_waypoints))
         waypoints.append(sorted_waypoints[rand_choice])
 
@@ -162,11 +168,12 @@ def get_route(request):
     path_coords = []
     path_coords.append(directions_result['legs'][0]['start_location'].copy())
     for step in directions_result['legs']:
-        path_coords.append(step['end_location'].copy())
+        for step2 in step['steps']:
+            path_coords.append(step2['end_location'].copy())
 
     # Visual check
     for n, point in enumerate(path_coords):
         print("Step {}".format(n))
         print("Latitude: {} \t Longitude: {}".format(point['lat'], point['lng']))
 
-    return (json.dumps(path_coords), 200, headers)
+    return json.dumps(path_coords), 200, headers
