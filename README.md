@@ -15,7 +15,9 @@ To work with this project we recommend the following setup:
 
 Run the [XAMPP](https://www.apachefriends.org/download.html) installer. Also set up a [Google Cloud Account](https://cloud.google.com/).
 
-In order to get the website running you must copy the contents of the htdocs directory of the repository inside the XAMPP install htdocs directory. Boot up the XAMPP control panel, activate the Apache server and the SQL server and now browsing Localhost should yield something like ![this](img/SafeRunnerPage.jpg):
+In order to get the website running you must copy the contents of the htdocs directory of the repository inside the XAMPP install htdocs directory. Boot up the XAMPP control panel, activate the Apache server and the SQL server and now browsing Localhost should yield something like this:
+
+![Image of the page](img/SafeRunnerPage.jpg):
 
 To get both the App Engine, cloud function and SQL database we suggest following Google's [official documentation on the subject](https://cloud.google.com/docs). They know better than we do.
 
@@ -27,8 +29,9 @@ For deployment you should follow Google's [official documentation on the subject
 
 ## Architecture
 
-This is the architecture of the ![system:](img/Esquema.jpg).
+This is the architecture of the system:
 
+![System Architecture](img/Esquema.jpg).
 
 The overall connection scheme between components is depicted, showing which calculations shall be performed server-side (those regarding the creation of the route itself) and which ones shall be performed client-side (which are mostly aesthetic to provide a better user experience). A key design decision was using AJAX to update the route on the client-side, since we would otherwise have to call the cloud function from the server, ultimately giving a slower and less fluid user experience as well as needlessly complicating the communication scheme. Aside from that, the design is straightforward: the App Engine instance provides the SafeRunner site as an HTML (implemented through php). This html file carries a form that needs to be filled with date, running pace and time, as well as an origin point. On user submission, the form is sent to the cloud function that processes the route with other users' data stored in our databases and returns the route dynamically through AJAX.
 
