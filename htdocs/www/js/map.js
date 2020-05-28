@@ -68,50 +68,45 @@ function beginMap(latitud, longitud) {
 
             //$.post("https://us-central1-safe-runner.cloudfunctions.net/function-2",
             $.post("https://us-central1-carles-voice-recognition.cloudfunctions.net/safe-runner-path",
-                json_opt, function(data, status)
+                json_opt, function(data, status) {
+                console.log("Gotten data");
+                console.log(data);
+
+                data = data.replace(/'/g, '"');
+                var coords = JSON.parse(data);
+                console.log(coords);
+
+                //setTimeout(function() {}, 1000);
+
+                var tot_lng = 0.0;
+                var tot_lat = 0.0;
+
+               	for (var x = 0; x < coords.length; x++)
                 {
-                    console.log("Gotten data");
-                    console.log(data);
+                	console.log(coords[x]);
+                    tot_lng += coords[x].lng;
+                    tot_lat += coords[x].lat;
+                }
 
-                    data = data.replace(/'/g, '"');
-                    var coords = JSON.parse(data);
-                    console.log(coords);		    
- 		    
-		    var gcoord = [new google.maps.LatLng(data[0][lat], data[0][lng])];
-		    for (var x = 1; x < data.lenght; x++)
-		    {
-			gcoord.push(new google.maps.LatLng(data[x][lat], data[x][lng]));
-		    }
-			
-                    // var tot_lng = 0.0;
-                    // var tot_lat = 0.0;
+                console.log(tot_lng);
+                console.log(tot_lat);
 
-                    // for (var x = 0; x < data.length; x++)
-                    // {
-                    //     console.log(typeof(data[x].lng));
-                    //     tot_lng += data[x].lng;
-                    //     tot_lat += data[x].lat;
-                    // }
+                tot_lng /= coords.length > 0.0? coords.length: 1.0;
+                tot_lat /= coords.length > 0.0? coords.length: 1.0;
 
-                    // console.log(tot_lng);
-                    // console.log(tot_lat);
-                    // tot_lng /= data.length > 0.0? data.length: 1.0;
-                    // tot_lat /= data.length > 0.0? data.length: 1.0;
+                const center = new google.maps.LatLng(tot_lat, tot_lng);
+                map.panTo(center);
 
-                    // const center = new google.maps.LatLng(tot_lat, tot_lng);
-                    // map.panTo(center);
-
-                    var test_line = new google.maps.Polyline({
-                        path: gcoord,
-                        geodesic: false,
-                        strokeColor: '#f542e3',
-                        strokeOpacity: 1.0,
-                        strokeWeight: 2
-                    });
-		    console.log(test_line);
-
-                    test_line.setMap(map);
-                });
+                var test_line = new google.maps.Polyline({
+                    path: coords,
+                    geodesic: false,
+                    strokeColor: '#f542e3',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2
+            	});
+		    	console.log(test_line);
+                test_line.setMap(map);
+            });
 
             $("#output_container").show(500, function() {
                 $("html, body").animate({scrollTop: 0}, 1000, "swing", function() {
