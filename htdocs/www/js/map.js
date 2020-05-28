@@ -66,7 +66,8 @@ function beginMap(latitud, longitud) {
 
             $("#full_container").remove();
 
-            $.post("https://us-central1-safe-runner.cloudfunctions.net/function-2",
+            //$.post("https://us-central1-safe-runner.cloudfunctions.net/function-2",
+            $.post("https://us-central1-carles-voice-recognition.cloudfunctions.net/safe-runner-path",
                 json_opt, function(data, status)
                 {
                     console.log("Gotten data");
@@ -74,7 +75,14 @@ function beginMap(latitud, longitud) {
 
                     data = data.replace(/'/g, '"');
                     var coords = JSON.parse(data);
-
+                    console.log(coords);		    
+ 		    
+		    var gcoord = [new google.maps.LatLng(data[0][lat], data[0][lng])];
+		    for (var x = 1; x < data.lenght; x++)
+		    {
+			gcoord.push(new google.maps.LatLng(data[x][lat], data[x][lng]));
+		    }
+			
                     // var tot_lng = 0.0;
                     // var tot_lat = 0.0;
 
@@ -94,12 +102,13 @@ function beginMap(latitud, longitud) {
                     // map.panTo(center);
 
                     var test_line = new google.maps.Polyline({
-                        path: coords,
+                        path: gcoord,
                         geodesic: false,
                         strokeColor: '#f542e3',
                         strokeOpacity: 1.0,
                         strokeWeight: 2
                     });
+		    console.log(test_line);
 
                     test_line.setMap(map);
                 });
