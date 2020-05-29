@@ -1,44 +1,50 @@
+<!-- THIS PROGRAM IS UNUSED AS ALL CONNECTIONS ARE DONE THROUGH PYHON, BUT IT WORKS -->
+
 <?php
-require_once __DIR__.'./connectaBD.php';
+require_once __DIR__.'/connectaBD.php';
 
-function creaUsuari($id_cookie){
-    $connexio = connectaBD();
-    $sql = $connexio->prepare("INSERT INTO `usuari` (`id_cookie`) VALUES (:cookie);");
-    $sql->bindParam(':cookie', $id_cookie);
-    $sql->execute();
-}
-
-// Ara mateix afegir punts i crear la ruta ho tinc en funcions separades,
-// també es podria fer un una sola que tingués per parametres el mateix
-// que creaRuta més una llista amb la info dels punts. Si us ha de ser
-// més còmode així, m'ho dieu i les fusiono.
-
-// Assumeix que existeix un usuari amb id id_cookie
-// data en format DATETIME, des de php date("Y-m-d H:i:s"). Per default calcula l'actual
-// municipi és un string i ritme és un enter ( 1, 2, 3 ...)
-// retorna la id de la ruta creada, per poder-hi afegir els punts
-function creaRuta($id_cookie,$municipi,$data,$ritme){
+function creaRuta($municipi,$data,$ritme, $punts){
     /*
-    $municipi = filter_var($municipi, FILTER_SANITIZE_STRING);
-    if (!(filter_data($ritme, FILTER_VALIDATE_INT))) throw new Exception("Unsafe data entry");
+    Function that inserts a new route to the database and all of it's children points.
+    param municipi: town of the route to be created
+    param data: date and time of the route to be created
+    param ritme: pace of the user's walking
+    param punts: list of dictionaries with the information that needs to be stored from each points
+    return: id of the newly created route
     */
 
     $connexio = connectaBD();
-    $sql = $connexio->prepare("INSERT INTO `ruta` (`id`, `id_cookie`, `municipi`, `data`, `ritme`) VALUES (NULL, :Cookie, :Municipi, :Data, :Ritme);");
-    $sql->bindParam(':Cookie', $id_cookie);
+    $sql = $connexio->prepare("INSERT INTO `ruta` (`municipi`, `data`, `ritme`) VALUES (:Municipi, :Data, :Ritme);");
     $sql->bindParam(':Municipi', $municipi);
     $sql->bindParam(':Data', $data);
     $sql->bindParam(':Ritme', $ritme);
     $sql->execute();
     $id_ruta = $connexio->lastInsertId();
+    
+    foreach ($punts as $punt) {
+        $connexio = connectaBD();
+        $sql = $connexio->prepare("INSERT INTO punt (`id_ruta`,`id_waypoint`,`nom_waypoint`,`data`,`latitud`, `longitud`, `ordre_a_ruta`) VALUES (:id_ruta,:id_waypoint,:nom_waypoint,:Data,:latitud, :longitud, :ordre_a_ruta);");
+        //:id_ruta,:id_waypoint,:nom_waypoint,:Data,:latitud, :longitud, :ordre_a_ruta
+        $sql->bindParam(':id_ruta', $id_ruta);
+        $sql->bindParam(':id_waypoint', $punt["id_waypoint"]);
+        $sql->bindParam(':nom_waypoint', $punt["nom_waypoint"]);
+        $sql->bindParam(':Data', $punt["data"]);
+        $sql->bindParam(':latitud', $punt["latitud"]);
+        $sql->bindParam(':longitud', $punt["longitud"]);
+        $sql->bindParam(':ordre_a_ruta', $punt["ordre"]);
+        $sql->execute();
+    }
     return $id_ruta;
 }
 
-// Again, assumeix que existeix la ruta id_ruta
-// lat i long son floats de la mida recomanada per google (4 dec abans de la coma 6 després)
 function creaPunt($id_ruta,$lat,$long,$ordre){
     /*
-    if (!(filter_data($lat, FILTER_VALIDATE_FLOAT) and filter_data($long, FILTER_VALIDATE_FLOAT) and filter_data($ordre, FILTER_VALIDATE_INT))) throw new Exception("Unsafe data entry");
+    -------- can't be used with the current database --------
+    Function that inserts a new point to the database, given its information.
+    param id_ruta: id of the point's parent route
+    param lat: latitude of the point
+    param lat: latitude of the point
+    param ordre: order of the point inside the route
     */
     $connexio = connectaBD();
     $sql = $connexio->prepare("INSERT INTO `punt` (`id_ruta`, `latitud`, `longitud`, `ordre_a_ruta`) VALUES (:id_ruta, :lat, :long, :ord);");
@@ -49,19 +55,20 @@ function creaPunt($id_ruta,$lat,$long,$ordre){
     $sql->execute();
 }
 
-// TODO: function getPuntsRuta($id_ruta)
 function getPuntsRuta($id_ruta){
+    /*
+    Function to get all points from a route
+    param id_ruta: id of the route to be retrieved
+    return: list of dictionaries containing all information from each point
+    */
     $connexio = ConnectaBD();
     $sql = $connexio->prepare('SELECT * FROM `punt` WHERE `id_ruta` = :id');
     $sql->bindParam(':id', $id_ruta);
     $sql->execute();
     $punts = [];
     while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
-        //$prods[] = $result;
         $punts += [$result["id_punt"] => $result ];
-        //consol.log($result);
     }
-    //print_r($prods);
     return $punts;
 }
 
