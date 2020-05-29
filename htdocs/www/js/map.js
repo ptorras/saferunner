@@ -1,7 +1,16 @@
 console.log("Its loaded");
-// Funcio de startup de la API de google maps
 
 function initMap() {
+    // Funcio de startup de la API de google maps
+
+    // Es crida quan es carrega la API de Google Maps i configura la ubicació 
+    // inicial del mapa. En cas que no es pugui fer servir la geolocalització 
+    // aleshores es passa una ubicació per defecte
+
+    // Com el pas de la geolocalització només es pot fer via funció de
+    // tractament aleshores es crida beginMap, que construeix el mapa, des
+    // d'una funció anònima amb les dades de posició.
+
     console.log("enabled map");
     if (navigator.geolocation)
     {
@@ -16,7 +25,10 @@ function initMap() {
 }
 
 function beginMap(latitud, longitud) {
-    // El mapa en si
+    // Funció que construeix tot el mapa de Google i configura els seus
+    // paràmetres (listeners, events, etc)
+
+    // Creació del mapa en si
     var map = new google.maps.Map(document.getElementById('map'), {
         center: {lat:Number(latitud), lng:Number(longitud)},
         zoom: 15,
@@ -34,7 +46,7 @@ function beginMap(latitud, longitud) {
 
     posMark.open(map);
 
-    // En cas de clicks modificar el formulari i la senyal
+    // En cas de clicks modificar el formulari i la senyal de posició
     map.addListener('click', function(mapsMouseEvent) {
         posMark.close();
 
@@ -48,11 +60,17 @@ function beginMap(latitud, longitud) {
         $("#route_in_lng").val(mapsMouseEvent.latLng.lng);
     });
 
+    // En cas d'enviar el formulari cal recollir-lo i enviar-lo asíncronament
+    // amb AJAX (emprant JQuery)
     $("#submitbutton").on("click", function() {
         $("#full_container").hide(500, function() {
+
+            // Trucs javascript per no haver de generar una nova instància del
+            // mapa (amaguem el contenidor de resultat, hi movem el mapa
+            // anterior i animem de nou l'entrada de l'objecte, eliminant el
+            // formulari antic)
             $("#output_container").hide(0);
             var $map_container = $("<div>", {"class": "rounded transp-back"});
-            // Afegir titol i altres histories per indicar la ruta
             $map_container.append($("#map"));
             $("#output_container").append($map_container);
 
@@ -66,7 +84,8 @@ function beginMap(latitud, longitud) {
 
             $("#full_container").remove();
 
-            //$.post("https://us-central1-safe-runner.cloudfunctions.net/function-2",
+            // Request Post. Internament també s'encarrega de fer la request
+            // CORS per a que poguem fer ús de recursos cross origin
             $.post("https://us-central1-carles-voice-recognition.cloudfunctions.net/safe-runner-path",
                 json_opt, function(data, status) {
                 console.log("Gotten data");
@@ -76,8 +95,7 @@ function beginMap(latitud, longitud) {
                 var coords = JSON.parse(data);
                 console.log(coords);
 
-                //setTimeout(function() {}, 1000);
-
+                // Calculem un nou punt central on moure el mapa
                 var tot_lng = 0.0;
                 var tot_lat = 0.0;
 
@@ -91,6 +109,7 @@ function beginMap(latitud, longitud) {
                 console.log(tot_lng);
                 console.log(tot_lat);
 
+                // Per evitar problemes de divisions per zero
                 tot_lng /= coords.length > 0.0? coords.length: 1.0;
                 tot_lat /= coords.length > 0.0? coords.length: 1.0;
 
@@ -108,6 +127,8 @@ function beginMap(latitud, longitud) {
                 test_line.setMap(map);
             });
 
+            // Detall per posar la càmara de nou a la part de dalt de la
+            // pàgina
             $("#output_container").show(500, function() {
                 $("html, body").animate({scrollTop: 0}, 1000, "swing", function() {
                     
