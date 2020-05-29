@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- Main webpage of the service. It's almost entirely a form, in which the user inputs their route data -->
 <html lang="en">
     <head>
     <!-- Required meta tags -->
