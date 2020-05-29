@@ -2,6 +2,8 @@
 
 __SafeRunner__ is a project that allows users to plan a route to go for a run without worrying about finding other people. It is very well suited for these times of pandemic. Or if you just don't want to be bothered, which is also fine.
 
+If we still have it running, you can find the project's webpage [here](https://carles-voice-recognition.ew.r.appspot.com)
+
 ## Getting Started
 
 To work with this project we recommend the following setup:
@@ -19,9 +21,9 @@ In order to get the website running you must copy the contents of the htdocs dir
 
 ![Image of the page](img/SafeRunnerPage.jpg):
 
-To get both the App Engine, cloud function and SQL database we suggest following Google's [official documentation on the subject](https://cloud.google.com/docs). They know better than we do.
+To get the App Engine, Cloud Function and Cloud SQL database running we suggest following Google's [official documentation on the subject](https://cloud.google.com/docs). They know better than we do.
 
-You should change the [php key](htdocs/www/secret/key.php) and instances of links referring to the services found in [the javascript asynchronous call in the map function](htdocs/www/js/map.js). You should also change database credentials in the python cloud function.
+You should change the [php key](htdocs/www/secret/key.php) and all instances of links referring to the services found in [the javascript asynchronous call in the map function](htdocs/www/js/map.js). You should also change database credentials in the python cloud function. And don't forget to give the SQL Client Role to the adress associated with the Cloud Function if you make the Cloud SQL database in a separate project, you'll thank us later.
 
 ## Deployment
 
@@ -34,6 +36,7 @@ This is the architecture of the system:
 ![System Architecture](img/Esquema.jpg).
 
 The overall connection scheme between components is depicted, showing which calculations shall be performed server-side (those regarding the creation of the route itself) and which ones shall be performed client-side (which are mostly aesthetic to provide a better user experience). A key design decision was using AJAX to update the route on the client-side, since we would otherwise have to call the cloud function from the server, ultimately giving a slower and less fluid user experience as well as needlessly complicating the communication scheme. Aside from that, the design is straightforward: the App Engine instance provides the SafeRunner site as an HTML (implemented through php). This html file carries a form that needs to be filled with date, running pace and time, as well as an origin point. On user submission, the form is sent to the cloud function that processes the route with other users' data stored in our databases and returns the route dynamically through AJAX.
+
 
 ## Authors
 
